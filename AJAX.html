@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Open Weather</title>
+<style>
+p{padding:0;margin: 0;}
+body {background-image: url("sky.jpg");text-align: center;}
+</style>
+</head>
+
+<body >
+<h1 style="font-size:45pt;">Open Weather via AJAX</h1>
+<label style="font-size:20pt;"><b>Enter ZIP code: </b><input style="font-size:20pt;" type="text" id="zip" style="margin-right: 18px;"></label><input style="font-size:15pt;margin-left: 8px;" type="button" onclick="getNews()" value="Get Weather" id="get">
+<input style="font-size:15pt;" type="button" value="Clear" onclick="location.reload()">
+
+
+
+
+
+<div id="weather" style="text-align:center;margin-top: 30px;text-decoration: underline;font-size:25pt;">
+</div>
+
+<script>
+
+var show="";
+var link;
+
+function getNews() {
+    var l=document.getElementById("zip").value;
+    l="https://api.openweathermap.org/data/2.5/weather?zip=" +l+ ",us&units=imperial&APPID=51c18b4b578112ee43243dae45b6a30a";
+    fetch(l)
+        .then((response) => response.json())
+		.then((jsonResult) => processNews(jsonResult))
+        .catch(notifyOfError);
+}
+
+function processNews(jsonResult) {
+        console.log(jsonResult);
+    var a=jsonResult.name;
+    var b=jsonResult.main.temp;
+show=show+"<p>"+a+": "+b+"</p>";
+
+	document.getElementById("weather").innerHTML = show;
+}
+
+function notifyOfError(err) {
+    var errMsg = "<p>" + err.msg + "</p>";
+    show=show+errMsg;
+	document.getElementById("weather").innerHTML = show;
+}
+
+</script>
+</body>
+</html>
